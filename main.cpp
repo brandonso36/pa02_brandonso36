@@ -101,9 +101,13 @@ int main(int argc, char** argv){
 
             // Grab the best movie from the set
             auto bestMovie = *matches.begin();
+
+            // gemini suggested this for removing trailing 0's
+            ostringstream ratingStream;
+            ratingStream << bestMovie.rating;
             
             // Instead of printing it immediately, format it and save it for later
-            string summary = "Best movie with prefix " + s + " is " + bestMovie.name + " with rating " + to_string(bestMovie.rating);
+            string summary = "Best movie with prefix " + s + " is " + bestMovie.name + " with rating " + ratingStream.str();
             bestMovieSummaries.push_back(summary);
         }
     }
