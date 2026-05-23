@@ -76,11 +76,12 @@ int main(int argc, char** argv){
     //  For each prefix,
     //  Find all movies that have that prefix and store them in an appropriate data structure
     //  If no movie with that prefix exists print the following message
+    vector<string> bestMovieSummaries;
+
     for (string s : prefixes){
         Movie dummy(s, 0.0);
 
-        auto it = lower_bound(movieList.begin(), movieList.end(), dummy, CompareAlphabetically()); // gemini suggested use of lower_bound to get first instance of match
-
+        auto it = lower_bound(movieList.begin(), movieList.end(), dummy, CompareAlphabetically()); 
 
         set<Movie> matches;
         while (it != movieList.end() && it->name.rfind(s, 0) == 0) {
@@ -88,19 +89,28 @@ int main(int argc, char** argv){
             it++;                   // Move to the next movie in the database
         }
         
-        if (matches.empty()) cout << "No movies found with prefix "<< s << endl;
-
-        else{
+        if (matches.empty()) {
+            cout << "No movies found with prefix " << s << "\n";
+        }
+        else {
             for (const auto& m : matches) {
-                cout << m.name << ", " << m.rating << endl;
+                cout << m.name << ", " << m.rating << "\n";
             }
 
-            cout << endl;
+            cout << "\n";
 
+            // Grab the best movie from the set
             auto bestMovie = *matches.begin();
-            cout << "Best movie with prefix " << s << " is: " 
-                << bestMovie.name << " with rating " << bestMovie.rating << endl;
+            
+            // Instead of printing it immediately, format it and save it for later
+            string summary = "Best movie with prefix " + s + " is " + bestMovie.name + " with rating " + to_string(bestMovie.rating);
+            bestMovieSummaries.push_back(summary);
         }
+    }
+
+    // After processing all prefixes, print out the final summary block at the bottom
+    for (const string& summary : bestMovieSummaries) {
+        cout << summary << "\n";
     }
     
     return 0;
