@@ -81,7 +81,7 @@ int main(int argc, char** argv){
     for (string s : prefixes){
         Movie dummy(s, 0.0);
 
-        auto it = lower_bound(movieList.begin(), movieList.end(), dummy, CompareAlphabetically()); 
+        auto it = movieList.lower_bound(dummy);
 
         set<Movie> matches;
         while (it != movieList.end() && it->name.rfind(s, 0) == 0) {
